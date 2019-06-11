@@ -1,5 +1,6 @@
 package quotes;
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -41,5 +42,12 @@ public class QuoteTest {
         assertEquals("Last quote is from 办理明尼苏达大学双城分校毕业证[学历认证University of Minnesota Twin Cities",
                 "办理明尼苏达大学双城分校毕业证[学历认证University of Minnesota Twin Cities",
                 test[137].author);
+    }
+
+    @Test
+    public void test_app_reads_from_url() throws IOException {
+        String url = "http://swquotesapi.digitaljedi.dk/api/SWQuote/RandomStarWarsQuote";
+        Quote q = App.readFromUrl(url);
+        assertTrue("Returned value should not be null", q != null);
     }
 }
