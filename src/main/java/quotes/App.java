@@ -4,7 +4,6 @@
 package quotes;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -19,7 +18,9 @@ public class App {
         String url = "http://swquotesapi.digitaljedi.dk/api/SWQuote/RandomStarWarsQuote";
         String singleQuote = "";
         try {
-            singleQuote = readFromUrl(url).toString();
+            Quote tempQuote = readFromUrl(url);
+            singleQuote = tempQuote.toString();
+            addToQuoteFile( "src/main/resources/recentquotes.json", tempQuote.getQuote());
         } catch (IOException e) {
             try {
                 quotes = readFromJson("src/main/resources/recentquotes.json");
@@ -28,11 +29,13 @@ public class App {
             }
         }
         //Get random int for quote
-        if (singleQuote != null){
+        if (singleQuote != ""){
             System.out.println(singleQuote);
         } else {
             System.out.println(quotes[(int)(Math.random() * quotes.length )].toString());
         }
+
+
     }
 
     // This file reads from the json and returns an array of quotes
@@ -53,9 +56,22 @@ public class App {
         return quote;
     }
 
-    public static void addToQuoteFile(String filepath){
+    public static void addToQuoteFile(String filepath, String quote) throws IOException {
+        try {
+            RandomAccessFile quotesFile = new RandomAccessFile(filepath, "rw");
+            long fileLen = quotesFile.length();
+            if (fileLen > 0){
+                quotesFile.setLength(fileLen -1);
+            }
+            quotesFile.close();
+            BufferedWriter writer = new BufferedWriter(
+                    new FileWriter(filepath, true));
+            writer.append(String.format(",\n{\n\"author\": \"Star Wars\",\n\"text\": \"%s\"\n}\n]", quote));
+            writer.close();
+        } catch(IOException e){
+            System.out.println(e);
+        }
 
     }
 }
 
-//.getAsJsonArray();

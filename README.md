@@ -1,13 +1,15 @@
 # Quotes
 
-This application currently returns a random quote from a JSON file.  This application has a static method than can be used for reading an Array of Quote objects from a JSON file.  Once read in a random index is generated and then printed to the user.
+This app attempts to read a quote from the Star Wars quotes api,  if successful it prints that to the screen and appends it to the default quotes file.  If it cant access the api, it randomly selects a quote from the default quotes and prints that to screen.
 
 ## Struture
 
-```App.class```   
+`App.class`   
 ```-public static Quote[] readFromJson(String fileName)```Takes in a filename (String) and returns an array of Quotes.  
-```Quote.class```    
-  ```-public String toString() ```Returns a string containing the author and text of the quote.  
+
+`Quote.class`    
+Has overloaded constructor to make a quote for either the Star Wars quote or the default author quotes.
+  `-public String toString()` Returns a string containing the author and text of the quote.  
 
 ## Dependencies
 ```
@@ -21,7 +23,8 @@ Follow normal git procedures usually something similar to;
 ```git clone <repo url>```
 
 ## Run
+From the root of the gradle project:   
 To run the program run.  
-```./gradlew run```  
+`./gradlew run`  
 To test the program run.  
-```./gradlew test```  
+`./gradlew test`  

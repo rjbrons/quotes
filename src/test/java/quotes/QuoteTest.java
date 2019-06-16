@@ -1,10 +1,11 @@
 package quotes;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import static org.junit.Assert.*;
 
@@ -49,5 +50,25 @@ public class QuoteTest {
         String url = "http://swquotesapi.digitaljedi.dk/api/SWQuote/RandomStarWarsQuote";
         Quote q = App.readFromUrl(url);
         assertTrue("Returned value should not be null", q != null);
+    }
+
+    @Test
+    public void test_addToFileWorks() throws IOException {
+        String url = "http://swquotesapi.digitaljedi.dk/api/SWQuote/RandomStarWarsQuote";
+        Quote q = App.readFromUrl(url);
+        String sampleText = "I am one with the Force, the Force is with me";
+        App.addToQuoteFile("src/main/resources/testQuotes.txt" , sampleText);
+        assertTrue("Added string should be in the file", checkFileForSubstring(sampleText));
+    }
+
+    private static Boolean checkFileForSubstring(String sampleText) throws IOException {
+        Scanner sc = new Scanner(new File("src/main/resources/testQuotes.txt"));
+        while (sc.hasNextLine()){
+            String line = sc.nextLine();
+            if (line.contains(sampleText)){
+                return true;
+            }
+        }
+        return false;
     }
 }
